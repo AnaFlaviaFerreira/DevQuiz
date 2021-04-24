@@ -7,7 +7,7 @@ class AwnserWidget extends StatelessWidget {
   final bool isRight;
   final bool isSelected;
 
-  const AwnserWidget({Key key, this.title, this.isRight = false, this.isSelected = false}) : super(key: key);
+  const AwnserWidget({Key? key, required this.title, this.isRight = false, this.isSelected = false}) : super(key: key);
 
   //validação
   Color get _selectedColorRight =>
