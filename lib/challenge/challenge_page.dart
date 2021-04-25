@@ -2,12 +2,14 @@ import 'package:dev_quiz/challenge/challenge_controller.dart';
 import 'package:dev_quiz/challenge/widgets/next__button/next_button_widget.dart';
 import 'package:dev_quiz/challenge/widgets/question_indicator/question_indicator.dart';
 import 'package:dev_quiz/challenge/widgets/quiz/quiz_widget.dart';
+import 'package:dev_quiz/result/result_page.dart';
 import 'package:dev_quiz/shared/models/question_model.dart';
 import 'package:flutter/material.dart';
 
 class ChallengePage extends StatefulWidget {
   final List<QuestionModel> questions;
-  ChallengePage({Key? key, required this.questions}) : super(key: key);
+  final String title;
+  ChallengePage({Key? key, required this.questions, required this.title}) : super(key: key);
 
   @override
   _ChallengePageState createState() => _ChallengePageState();
@@ -30,6 +32,13 @@ class _ChallengePageState extends State<ChallengePage> {
       pageController.nextPage(duration: Duration(milliseconds: 100), curve: Curves.linear);//opção de criar a animação
   }
 
+  void onSelected(bool value){
+    if(value) {
+      controller.qtdAwnserRight++;
+    }
+    nextPage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +58,7 @@ class _ChallengePageState extends State<ChallengePage> {
       body: PageView(
         physics: NeverScrollableScrollPhysics(),//bloqueando o sccroll para os lados
         controller: pageController,
-        children: widget.questions.map((e) => QuizWidget(question: e, onChange: nextPage)).toList(),
+        children: widget.questions.map((e) => QuizWidget(question: e, onSelected: onSelected)).toList(),
       ),
       bottomNavigationBar: SafeArea(
         bottom: true,
@@ -63,7 +72,11 @@ class _ChallengePageState extends State<ChallengePage> {
                     if(value < widget.questions.length)
                       Expanded(child: NextButtonWidget.white(label: "Pular", onTap: nextPage,)),
                     if(value == widget.questions.length)
-                      Expanded(child: NextButtonWidget.green(label: "Confirmar", onTap: () {Navigator.pop(context);})),
+                      Expanded(child: NextButtonWidget.green(label: "Finalizar", onTap: () {Navigator.pushReplacement(
+                        context, 
+                        MaterialPageRoute(
+                          builder: (context) => ResultPage(result: controller.qtdAwnserRight, title: widget.title,lenght: widget.questions.length)
+                        ));})),
                   ],
                 )
               ),
