@@ -35,6 +35,8 @@ class _ChallengePageState extends State<ChallengePage> {
   void onSelected(bool value){
     if(value) {
       controller.qtdAwnserRight++;
+    } else {
+      controller.qtdAwnserWrong++;
     }
     nextPage();
   }
@@ -75,7 +77,7 @@ class _ChallengePageState extends State<ChallengePage> {
                       Expanded(child: NextButtonWidget.green(label: "Finalizar", onTap: () {Navigator.pushReplacement(
                         context, 
                         MaterialPageRoute(
-                          builder: (context) => ResultPage(result: controller.qtdAwnserRight, title: widget.title,lenght: widget.questions.length)
+                          builder: (context) => ResultPage(result: controller.qtdAwnserRight, title: widget.title,lenght: widget.questions.length, resultWrong: controller.qtdAwnserWrong,)
                         ));})),
                   ],
                 )
